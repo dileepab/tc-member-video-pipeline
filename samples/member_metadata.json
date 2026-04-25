@@ -1,0 +1,16 @@
+{
+  "handle": "TopcoderStar",
+  "rating_color": "red",
+  "rating_label": "Red Rated",
+  "tracks": [
+    "Dev",
+    "Data Science"
+  ],
+  "top_skills": [
+    "Python",
+    "React",
+    "AWS",
+    "Computer Vision"
+  ],
+  "intro_text": "Hi, I am Topcoder Star, a red rated Topcoder member working across development and data science. I build fast cloud applications, automate video workflows, and love competing with the Topcoder community."
+}

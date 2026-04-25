@@ -1,0 +1,18 @@
+{
+  "source_uri": "demo-output/Profile_Intro_Video_Generated.mp4",
+  "output_uri": "outputs/api-demo-real-sample",
+  "metadata": {
+    "handle": "TopcoderStar",
+    "rating_color": "red",
+    "rating_label": "Red Rated",
+    "tracks": ["Dev", "Data Science"],
+    "top_skills": ["Python", "React", "AWS", "Computer Vision"],
+    "intro_text": "Hi, I am Topcoder Star, a red rated Topcoder member working across development and data science. I build fast cloud applications, automate video workflows, and love competing with the Topcoder community."
+  },
+  "render_options": {
+    "aspect": "both",
+    "work_dir": "work",
+    "output_dir": "outputs",
+    "keep_intermediates": false
+  }
+}

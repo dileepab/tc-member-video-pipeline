@@ -1,0 +1,94 @@
+# Deployment
+
+## Container
+
+Build:
+
+```bash
+docker build -t topcoder-profile-video-pipeline .
+```
+
+Run:
+
+```bash
+docker run --rm -p 8000:8000 topcoder-profile-video-pipeline
+```
+
+Smoke-check the API:
+
+```bash
+curl http://127.0.0.1:8000/health
+```
+
+Expected:
+
+```json
+{"status":"ok"}
+```
+
+The forum confirmed the deployment platform does not affect scoring as long as the reviewer can use it. This container can run on Render, Fly.io, ECS/Fargate, a VM, or a local reviewer machine.
+
+## Render Blueprint
+
+This repo includes `render.yaml` for a one-service Docker deployment. The container honors Render's `PORT` environment variable and exposes:
+
+- `GET /health` for readiness checks
+- `POST /jobs` for URI-based render jobs
+- `POST /render` for multipart upload render jobs
+- `GET /outputs/{job_id}/{filename}` for downloading rendered MP4/caption artifacts
+- `/docs` for FastAPI's built-in OpenAPI UI
+
+Recommended Render setup:
+
+1. Push this repo to GitHub.
+2. In Render, create a new Blueprint from the repo.
+3. Use `render.yaml` as-is.
+4. Add `OPENAI_API_KEY` only if you want live OpenAI captions; otherwise the deterministic caption fallback is expected.
+5. Open the deployed root URL and confirm it returns the API index.
+6. Open `/docs` and use `POST /render` with a 15-30 second MP4 and `samples/member_metadata.json`.
+
+After deployment, run:
+
+```bash
+.venv/bin/python scripts/smoke_deployment.py https://YOUR-SERVICE.onrender.com --skip-render
+```
+
+For a full render smoke test, first ensure `demo-output/before_raw_intro.mp4` exists:
+
+```bash
+.venv/bin/python scripts/generate_sample.py
+.venv/bin/python scripts/smoke_deployment.py https://YOUR-SERVICE.onrender.com
+```
+
+The full smoke test uploads a sample clip to `POST /render`, checks the JSON response, and downloads the returned landscape MP4 from `/outputs/...`.
+
+Free tiers may be too memory- or CPU-constrained for FFmpeg render jobs. If a hosted free-tier job times out, the same Docker image can still be reviewed locally with the commands above, which matches the forum clarification that deployment platform choice does not affect scoring as long as the reviewer can use the app.
+
+## AWS Reference Deployment
+
+Recommended services:
+
+- S3 bucket for raw uploads and final rendered assets.
+- API Gateway or ALB in front of the FastAPI service.
+- ECS/Fargate service for API plus separate on-demand worker tasks.
+- SQS for render requests.
+- DynamoDB for job status.
+- CloudWatch for structured logs and render timing metrics.
+
+## Environment
+
+Set:
+
+```bash
+OPENAI_API_KEY=...
+OPENAI_TRANSCRIBE_MODEL=gpt-4o-transcribe-diarize
+AWS_REGION=us-east-1
+TOPCODER_RENDER_WORKDIR=/tmp/work
+TOPCODER_OUTPUT_DIR=/tmp/outputs
+```
+
+For production, prefer IAM task roles over static AWS keys.
+
+## Review Note
+
+This repo includes a containerized deployment path and local verification flow, but it does not include a public deployed URL because that final step requires external cloud credentials and DNS/runtime ownership outside this workspace. The same Docker image and local setup guide can be used for reviewer verification if a free-tier hosted instance cannot reliably finish FFmpeg jobs.

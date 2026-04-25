@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 -c ' *)",
+      "Bash(python3 -m pytest tests/ -v)",
+      "Bash(pytest tests/ -v)",
+      "Bash(python -m pytest tests/ -v)",
+      "Bash(pyenv versions *)",
+      "Bash(cat .python-version)",
+      "Bash(python3.12 -m pytest tests/ -v)",
+      "Bash(.venv/bin/pytest tests/ -v)",
+      "Bash(tee submission-evidence/raw/tests.log)"
+    ]
+  }
+}

@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: topcoder-profile-video-pipeline
+    env: docker
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: TOPCODER_RENDER_WORKDIR
+        value: /tmp/work
+      - key: TOPCODER_OUTPUT_DIR
+        value: /tmp/outputs
+      - key: TOPCODER_TEMPLATE
+        value: topcoder-star
+      - key: OPENAI_TRANSCRIBE_MODEL
+        value: gpt-4o-transcribe-diarize

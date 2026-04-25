@@ -1,0 +1,23 @@
+{
+  "template": "topcoder-star",
+  "description": "Default high-energy Topcoder member profile intro template.",
+  "base": {
+    "background": "#05070B",
+    "topcoderBlue": "#29A7DF",
+    "topcoderGold": "#F7B500",
+    "successGreen": "#0AB88A",
+    "text": "#FFFFFF"
+  },
+  "ratingColors": {
+    "red": "#EF3A3A",
+    "yellow": "#F2C94C",
+    "blue": "#2D9CDB",
+    "green": "#27AE60",
+    "gray": "#8C8C8C"
+  },
+  "tracks": {
+    "Dev": { "icon": "</>", "accent": "#29A7DF" },
+    "Design": { "icon": "◆", "accent": "#F7B500" },
+    "Data Science": { "icon": "Σ", "accent": "#0AB88A" }
+  }
+}

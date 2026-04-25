@@ -1,0 +1,16 @@
+.env
+.venv
+.pytest_cache
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+*.egg-info
+.DS_Store
+
+demo-output
+outputs
+work
+submission-evidence
+challenge-notes
+topcoder_profile_video_pipeline.egg-info

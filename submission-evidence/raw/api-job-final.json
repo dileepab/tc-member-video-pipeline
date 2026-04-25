@@ -1,0 +1,37 @@
+{
+  "job_id": "d877992f026c",
+  "status": "succeeded",
+  "result": {
+    "job_id": "d877992f026c",
+    "input_uri": "demo-output/before_raw_intro.mp4",
+    "outputs": {
+      "landscape": "outputs/api-demo/profile_landscape.mp4",
+      "vertical": "outputs/api-demo/profile_vertical.mp4"
+    },
+    "captions": {
+      "srt": "outputs/api-demo/captions.srt",
+      "ass": "outputs/api-demo/captions.ass"
+    },
+    "manifest_path": "outputs/api-demo/manifest.json",
+    "duration_seconds": 18.0,
+    "estimated_cost_usd": 0.0017,
+    "output_file_sizes_bytes": {
+      "landscape": 4379005,
+      "vertical": 5445263
+    },
+    "timings": {
+      "probe_seconds": 0.064,
+      "audio_seconds": 1.473,
+      "caption_seconds": 0.002,
+      "render_seconds": 25.494
+    },
+    "adapters": {
+      "transcription": "fallback-scripted",
+      "renderer": "ffmpeg-libx264-libass",
+      "audio": "ffmpeg-afftdn-loudnorm-sidechaincompress"
+    },
+    "warnings": []
+  },
+  "error": null,
+  "logs": []
+}

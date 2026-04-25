@@ -1,0 +1,7 @@
+Created Topcoder Star before/after showcase video at demo-output/topcoder_star_before_after.mp4
+
+Verification:
+- ffprobe video stream: h264,1280,720,28.966667
+- file size: about 4.0 MB
+- source raw clip: demo-output/Profile_Intro_Video_Generated.mp4
+- rendered clip: demo-output/after/profile_landscape.mp4

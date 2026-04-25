@@ -1,0 +1,44 @@
+{
+  "template": "topcoder-star",
+  "description": "Topcoder-inspired theme using colors observed on https://www.topcoder.com/ on 2026-04-24.",
+  "assets": {
+    "logoWordmark": "assets/branding/logo.min.png",
+    "logoMark": "assets/branding/logo.min.png"
+  },
+  "base": {
+    "background": "#0A0A0A",
+    "surface": "#0B3D56",
+    "primary": "#00797A",
+    "accent": "#3DDBD9",
+    "secondary": "#60267D",
+    "muted": "#E9ECEF",
+    "text": "#FFFFFF"
+  },
+  "ratingColors": {
+    "red": "#DC3545",
+    "yellow": "#FFC107",
+    "blue": "#0D61BF",
+    "green": "#28A745",
+    "gray": "#6C757D"
+  },
+  "tracks": {
+    "Dev": {
+      "icon": "</>",
+      "iconAsset": "assets/branding/track-dev.png",
+      "accent": "#28A745",
+      "captionFont": "DejaVu Sans Mono"
+    },
+    "Design": {
+      "icon": "◈",
+      "iconAsset": "assets/branding/track-design.png",
+      "accent": "#0D61BF",
+      "captionFont": "DejaVu Serif"
+    },
+    "Data Science": {
+      "icon": "Σ",
+      "iconAsset": "assets/branding/track-data-science.png",
+      "accent": "#F2994A",
+      "captionFont": "DejaVu Sans"
+    }
+  }
+}
