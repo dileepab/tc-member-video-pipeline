@@ -1,0 +1,35 @@
+1
+00:00:00,000 --> 00:00:01,450
+Hi, I'm Dilip,
+
+2
+00:00:01,550 --> 00:00:04,900
+a full-stack developer dedicated to building robust,
+
+3
+00:00:05,200 --> 00:00:07,050
+high-performance digital solutions.
+
+4
+00:00:07,550 --> 00:00:09,100
+I specialize in React,
+
+5
+00:00:09,200 --> 00:00:10,000
+Next.js,
+
+6
+00:00:10,200 --> 00:00:14,000
+and TypeScript with deep experience in Firebase for scalable backends.
+
+7
+00:00:14,450 --> 00:00:20,400
+I love turning complex requirements into clean, maintainable code.
+
+8
+00:00:21,350 --> 00:00:24,750
+I'm ready to help you win your next challenge.
+
+9
+00:00:25,300 --> 00:00:27,550
+Let's connect and get to work.

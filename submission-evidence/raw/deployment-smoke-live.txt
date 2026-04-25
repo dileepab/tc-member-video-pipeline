@@ -1,0 +1,30 @@
+Live deployment smoke test against https://topcoder-profile-video-pipeline.onrender.com
+Captured 2026-04-26.
+
+Command:
+.venv/bin/python scripts/smoke_deployment.py https://topcoder-profile-video-pipeline.onrender.com --skip-render
+
+Result:
+- OK /: 200
+- OK /health: 200
+- OK /docs: 200
+
+GET / response body:
+{
+  "name": "Topcoder Profile Intro Video Pipeline",
+  "status": "ok",
+  "docs": "/docs",
+  "health": "/health",
+  "endpoints": {
+    "upload_render": "POST /render",
+    "create_job": "POST /jobs",
+    "job_status": "GET /jobs/{job_id}",
+    "outputs": "/outputs/{job_id}/{filename}"
+  }
+}
+
+Note on full render against the live URL:
+- Render free tier (512 MB) is too constrained to run a full FFmpeg render reliably; long renders may 502 or be killed by the platform.
+  The forum confirmation explicitly allows local/Docker-based review, so the recommended reviewer flow for a full render is local
+  Docker or `uvicorn` per docs/DEPLOYMENT.md. The live URL is provided for index/health/docs/Swagger verification, and the local
+  smoke run in deployment-smoke.txt covers the full upload/render/download path on the same Docker image.

@@ -18,13 +18,13 @@ Expected outputs:
 
 By default, `scripts/run_demo.py` prefers the bundled 29-second sample clip `demo-output/Profile_Intro_Video_Generated.mp4`. If that file is absent, it generates `demo-output/before_raw_intro.mp4` as a reproducible 18-second fallback reviewer input. Custom inputs must be 15-30 seconds long.
 
-To run the same pipeline with a specific real sample clip instead:
+To re-render with a custom input clip and output path:
 
 ```bash
 .venv/bin/python scripts/run_demo.py \
-  --input demo-output/Profile_Intro_Video_Generated.mp4 \
-  --output-dir demo-output/real-sample-after \
-  --work-dir demo-output/real-sample-work
+  --input path/to/your-clip.mp4 \
+  --output-dir demo-output/custom-after \
+  --work-dir demo-output/custom-work
 ```
 
 ## API Demo
@@ -63,13 +63,10 @@ Generate the required Topcoder Star before/after showcase video:
 
 That writes `demo-output/topcoder_star_before_after.mp4`, with the raw clip and polished profile intro shown side by side.
 
-Generate a short walkthrough video that shows how to run the app:
+The "how to run the app" walkthrough is a real screen recording, hosted at:
+**https://drive.google.com/file/d/1bL3winhCKszunqS0fq0QmXNUKLGIqGOx/view?usp=sharing**
 
-```bash
-.venv/bin/python scripts/create_demo_video.py
-```
-
-That writes `demo-output/run_app_demo.mp4`.
+Recording instructions are in [WALKTHROUGH_RECORDING.md](WALKTHROUGH_RECORDING.md) if a fresh take is ever needed.
 
 ## How To Check The Implementation
 
@@ -94,7 +91,6 @@ Check that these files exist:
 - `demo-output/after/captions.srt`
 - `demo-output/after/manifest.json`
 - `demo-output/topcoder_star_before_after.mp4`
-- `demo-output/run_app_demo.mp4`
 
 3. Verify the output dimensions.
 

@@ -9,9 +9,12 @@ Style: TopcoderCaption,DejaVu Sans Mono,40,&H00FFFFFF,&H0045A728,&HCC050505,&H80
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
-Dialogue: 0,0:00:02.00,0:00:07.09,TopcoderCaption,,0,0,0,,Hi, I am Topcoder Star, a
-Dialogue: 0,0:00:07.13,0:00:12.22,TopcoderCaption,,0,0,0,,red rated Topcoder member working across
-Dialogue: 0,0:00:12.26,0:00:17.35,TopcoderCaption,,0,0,0,,development and data science. I build
-Dialogue: 0,0:00:17.39,0:00:22.48,TopcoderCaption,,0,0,0,,fast cloud applications, automate video workflows,
-Dialogue: 0,0:00:22.52,0:00:27.61,TopcoderCaption,,0,0,0,,and love competing with the Topcoder
-Dialogue: 0,0:00:27.65,0:00:28.62,TopcoderCaption,,0,0,0,,community.
+Dialogue: 0,0:00:00.85,0:00:01.45,TopcoderCaption,,0,0,0,,Hi, I'm Dilip,
+Dialogue: 0,0:00:01.55,0:00:04.90,TopcoderCaption,,0,0,0,,a full-stack developer dedicated to building robust,
+Dialogue: 0,0:00:05.20,0:00:07.05,TopcoderCaption,,0,0,0,,high-performance digital solutions.
+Dialogue: 0,0:00:07.55,0:00:09.10,TopcoderCaption,,0,0,0,,I specialize in React,
+Dialogue: 0,0:00:09.20,0:00:10.00,TopcoderCaption,,0,0,0,,Next.js,
+Dialogue: 0,0:00:10.20,0:00:14.00,TopcoderCaption,,0,0,0,,and TypeScript with deep experience in Firebase for scalable backends.
+Dialogue: 0,0:00:14.45,0:00:20.40,TopcoderCaption,,0,0,0,,I love turning complex requirements into clean, maintainable code.
+Dialogue: 0,0:00:21.35,0:00:24.75,TopcoderCaption,,0,0,0,,I'm ready to help you win your next challenge.
+Dialogue: 0,0:00:25.30,0:00:27.55,TopcoderCaption,,0,0,0,,Let's connect and get to work.

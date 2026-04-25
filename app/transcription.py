@@ -48,7 +48,7 @@ class FallbackTranscriptProvider:
 
 
 class OpenAITranscriptProvider:
-    def __init__(self, model: str = "gpt-4o-mini-transcribe") -> None:
+    def __init__(self, model: str = "gpt-4o-transcribe-diarize") -> None:
         self.model = model
         self.name = f"openai-{model}"
 

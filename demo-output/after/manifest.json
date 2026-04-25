@@ -11,21 +11,22 @@
   },
   "manifest_path": "demo-output/after/manifest.json",
   "duration_seconds": 29.0,
-  "estimated_cost_usd": 0.0017,
+  "estimated_cost_usd": 0.00315,
   "output_file_sizes_bytes": {
-    "landscape": 5138504,
-    "vertical": 6972337
+    "landscape": 5180904,
+    "vertical": 7046793
   },
   "timings": {
-    "probe_seconds": 0.065,
-    "audio_seconds": 3.513,
-    "caption_seconds": 0.003,
-    "render_seconds": 31.826
+    "probe_seconds": 0.063,
+    "audio_seconds": 2.309,
+    "caption_seconds": 11.226,
+    "render_seconds": 32.977
   },
   "adapters": {
-    "transcription": "fallback-scripted",
+    "transcription": "openai-gpt-4o-transcribe-diarize",
     "renderer": "ffmpeg-libx264-libass",
-    "audio": "ffmpeg-afftdn-loudnorm-sidechaincompress"
+    "audio": "ffmpeg-afftdn-loudnorm-sidechaincompress",
+    "music": "bundled-eliveta-technology-pixabay-content-license"
   },
   "warnings": []
 }

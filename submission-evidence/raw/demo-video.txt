@@ -1,1 +1,0 @@
-Created demo walkthrough video at demo-output/run_app_demo.mp4

@@ -110,13 +110,15 @@ The deployed app ships a full interactive API explorer at `/docs`. Reviewers can
 6. Click **"Execute"** — returns a `job_id` instantly
 7. Click **`GET /jobs/{job_id}`** → **"Try it out"**, enter the `job_id`, click **"Execute"**
 8. Poll until `"status": "succeeded"` — `result.download_urls` includes the downloadable MP4/caption paths
-9. Open the output URL directly in your browser or download via curl:
+9. Open the output URL directly in your browser. Prefix the relative path returned in `download_urls.outputs.landscape` with the deployment origin:
    ```
-   http://127.0.0.1:8000/outputs/{job_id}/profile_landscape.mp4
+   https://topcoder-profile-video-pipeline.onrender.com/outputs/{job_id}/profile_landscape.mp4
    ```
+   Or download via curl:
    ```bash
-   curl http://127.0.0.1:8000/outputs/{job_id}/profile_landscape.mp4 -o output.mp4
+   curl https://topcoder-profile-video-pipeline.onrender.com/outputs/{job_id}/profile_landscape.mp4 -o output.mp4
    ```
+   When running locally instead, use `http://127.0.0.1:8000` as the origin.
 
 The same works for `profile_vertical.mp4`, `captions.srt`, and `manifest.json`.
 

@@ -18,6 +18,7 @@ The PoC is designed to be reviewer-friendly:
 - **Backend API:** Python 3.11+ / FastAPI
 - **Video rendering:** FFmpeg filter graphs with libx264, libass captions, official Topcoder PNG/SVG-derived overlays, and dynamic drawtext layers
 - **Audio cleanup:** FFmpeg `afftdn`, high/low pass filters, `loudnorm`, and sidechain music ducking
+- **Music bed:** ships with a bundled royalty-free track ("Technology" by eliveta, Pixabay Content License — no attribution required; see [assets/music/CREDITS.md](assets/music/CREDITS.md)) used by default; production callers can override via `render_options.music_path`; FFmpeg `lavfi` synthesis is the no-asset fallback
 - **Captions:** OpenAI `gpt-4o-transcribe-diarize` by default for synchronized caption segments when `OPENAI_API_KEY` is present; deterministic fallback captions for offline demos
 - **Storage:** Local filesystem and optional AWS S3 via `boto3`
 - **Deployment target:** Containerized ECS/Fargate worker or any Docker host with FFmpeg
@@ -43,7 +44,7 @@ If an OpenAI key is configured but the account has no available quota or billing
 
 ## Reviewer Setup
 
-> The deployed URL at `https://topcoder-profile-video-pipeline.onrender.com` may be slow or unavailable on the free tier. Local setup is fully supported per forum confirmation — please use the steps below.
+> The deployed URL at `https://topcoder-profile-video-pipeline.onrender.com` is up for `/`, `/health`, and `/docs`, but the free tier (512 MB) may OOM on a full FFmpeg render. Local setup is fully supported per forum confirmation — please use the steps below for full pipeline verification. The OpenAI API key authorized for review use is delivered through the Topcoder submission notes / forum DM at submission time. See [SUBMISSION.md](SUBMISSION.md) for the handover plan and authorized usage budget.
 
 **Prerequisites:** Python 3.11+, FFmpeg
 
@@ -55,7 +56,7 @@ python3 -m venv .venv
 source .venv/bin/activate
 pip install -e ".[dev]"
 
-# 2. Add the OpenAI API key (provided separately in the submission notes)
+# 2. Add the OpenAI API key (provided in the Topcoder submission notes — see SUBMISSION.md)
 export OPENAI_API_KEY=sk-...
 
 # 3. Start the API server
@@ -92,7 +93,9 @@ The same works for `profile_vertical.mp4`, `captions.srt`, and `manifest.json`.
 .venv/bin/python scripts/run_demo.py
 ```
 
-Output videos will be written to `demo-output/after/`. See `demo-output/topcoder_star_before_after.mp4` for the before/after showcase and `demo-output/run_app_demo.mp4` for a walkthrough.
+Output videos will be written to `demo-output/after/`. See `demo-output/topcoder_star_before_after.mp4` for the before/after showcase.
+
+**Walkthrough video (how to run the app):** [https://drive.google.com/file/d/1bL3winhCKszunqS0fq0QmXNUKLGIqGOx/view?usp=sharing](https://drive.google.com/file/d/1bL3winhCKszunqS0fq0QmXNUKLGIqGOx/view?usp=sharing)
 
 ---
 
@@ -122,13 +125,13 @@ That default command uses the bundled 29-second sample clip `demo-output/Profile
 
 Forum note: reviewer-provided inputs are expected to be English only. The render uses a common Topcoder Star template, with member metadata customizing the handle, rating color, skills, and first/top track.
 
-To test with a real sample clip instead:
+To re-render with a custom input clip and output path:
 
 ```bash
 .venv/bin/python scripts/run_demo.py \
-  --input demo-output/Profile_Intro_Video_Generated.mp4 \
-  --output-dir demo-output/real-sample-after \
-  --work-dir demo-output/real-sample-work
+  --input path/to/your-clip.mp4 \
+  --output-dir demo-output/custom-after \
+  --work-dir demo-output/custom-work
 ```
 
 Run the API:
@@ -149,11 +152,7 @@ Create the required before/after Topcoder Star showcase video:
 .venv/bin/python scripts/create_before_after_demo.py
 ```
 
-Create the run-app walkthrough video:
-
-```bash
-.venv/bin/python scripts/create_demo_video.py
-```
+The "how to run the app" walkthrough is a real screen recording, hosted at the Drive link above. The recording script is in [docs/WALKTHROUGH_RECORDING.md](docs/WALKTHROUGH_RECORDING.md).
 
 Submit a local render job:
 
@@ -252,6 +251,8 @@ The implementation is behaving correctly when:
 - Tooling and budget report: [docs/TOOLING_BUDGET.md](docs/TOOLING_BUDGET.md)
 - Demo instructions: [docs/DEMO.md](docs/DEMO.md)
 - Deployment notes: [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)
+- Walkthrough video script: [docs/WALKTHROUGH_RECORDING.md](docs/WALKTHROUGH_RECORDING.md)
+- Reviewer submission notes: [SUBMISSION.md](SUBMISSION.md)
 - Challenge traceability notes: [challenge-notes/](challenge-notes/)
 
 ## Output
@@ -264,9 +265,10 @@ Each completed job writes:
 - `captions.ass`
 - `manifest.json`
 
-The demo scripts also write:
+The before/after script also writes:
 
 - `demo-output/topcoder_star_before_after.mp4`
-- `demo-output/run_app_demo.mp4`
 
-The manifest includes render timings, selected adapters, output paths, per-output file sizes, and an estimated per-profile cost.
+The "how to run the app" walkthrough is a real screen recording at https://drive.google.com/file/d/1bL3winhCKszunqS0fq0QmXNUKLGIqGOx/view?usp=sharing.
+
+The manifest includes render timings, selected adapters (transcription, renderer, audio, music), output paths, per-output file sizes, and an estimated per-profile cost.

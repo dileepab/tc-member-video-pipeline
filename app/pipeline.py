@@ -101,7 +101,19 @@ class ProfileVideoPipeline:
 
         started = time.perf_counter()
         voice = clean_voice_track(input_video, options.work_dir / "voice_clean.m4a", duration)
-        music = options.music_path or generate_music_bed(options.work_dir / "music_bed.m4a", duration)
+        # Music selection priority:
+        #   1. explicit options.music_path (caller override, production track)
+        #   2. bundled assets/music/topcoder-bed.m4a (default — see CREDITS)
+        #   3. synthesized FFmpeg lavfi fallback (no licensing required)
+        if options.music_path:
+            music = options.music_path
+            music_source = f"caller-{Path(options.music_path).name}"
+        elif _default_bundled_music() is not None:
+            music = _default_bundled_music()
+            music_source = "bundled-eliveta-technology-pixabay-content-license"
+        else:
+            music = generate_music_bed(options.work_dir / "music_bed.m4a", duration)
+            music_source = "synth-ffmpeg-lavfi"
         mixed = mix_voice_and_music(
             voice,
             music,
@@ -190,6 +202,7 @@ class ProfileVideoPipeline:
             "transcription": transcription_adapter,
             "renderer": "ffmpeg-libx264-libass",
             "audio": "ffmpeg-afftdn-loudnorm-sidechaincompress",
+            "music": music_source,
         }
         if requested_transcription_adapter != transcription_adapter:
             adapters["transcription_requested"] = requested_transcription_adapter
@@ -241,6 +254,18 @@ _MIN_DURATION = 15.0
 _MAX_DURATION = 30.0
 _DURATION_TOLERANCE = 0.25
 _MAX_OUTPUT_BYTES = 30 * 1024 * 1024
+_BUNDLED_MUSIC_PATH = (
+    Path(__file__).resolve().parents[1] / "assets" / "music" / "topcoder-bed.m4a"
+)
+
+
+def _default_bundled_music() -> Path | None:
+    """Return the bundled CC BY-SA 3.0 music bed if it ships with this checkout.
+
+    See ``assets/music/CREDITS.md`` for attribution.  Returns ``None`` when
+    the file is absent, which lets the synthesized FFmpeg fallback take over.
+    """
+    return _BUNDLED_MUSIC_PATH if _BUNDLED_MUSIC_PATH.exists() else None
 
 
 def _validate_duration(duration: float) -> None:
