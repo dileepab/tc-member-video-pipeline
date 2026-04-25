@@ -57,12 +57,27 @@ pip install -e ".[dev]"
 # 2. Add the OpenAI API key (provided separately in the submission notes)
 export OPENAI_API_KEY=sk-...
 
-# 3. Run the full pipeline demo
-.venv/bin/python scripts/run_demo.py
-
-# 4. Start the API server
+# 3. Start the API server
 uvicorn app.main:app --reload
-# Open http://127.0.0.1:8000/docs to test via Swagger UI
+```
+
+### Test with your own video via Swagger UI
+
+1. Open **`http://127.0.0.1:8000/docs`** in your browser
+2. Click **`POST /render`** → **"Try it out"**
+3. Upload any 15–30 second MP4 under `file`
+4. Paste your member metadata under `metadata_json`:
+   ```json
+   {"handle": "your_handle", "rating": 1500, "rating_color": "yellow", "tracks": ["dev"], "skills": ["Python", "AI"]}
+   ```
+5. Click **"Execute"** — returns a `job_id` instantly
+6. Click **`GET /jobs/{job_id}`** → **"Try it out"**, enter the `job_id`, click **"Execute"**
+7. Poll until `"status": "succeeded"`, then use the `download_urls` in the response to download the rendered MP4
+
+### Run the pre-built demo instead
+
+```bash
+.venv/bin/python scripts/run_demo.py
 ```
 
 Output videos will be written to `demo-output/after/`. See `demo-output/topcoder_star_before_after.mp4` for the before/after showcase and `demo-output/run_app_demo.mp4` for a walkthrough.
