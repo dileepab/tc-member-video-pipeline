@@ -65,14 +65,18 @@ uvicorn app.main:app --reload
 
 1. Open **`http://127.0.0.1:8000/docs`** in your browser
 2. Click **`POST /render`** → **"Try it out"**
-3. Upload any 15–30 second MP4 under `file`
-4. Paste your member metadata under `metadata_json`:
+3. Under `file`, click **"Choose File"** and upload a 15–30 second MP4 clip
+4. Under `metadata_json`, paste:
    ```json
-   {"handle": "your_handle", "rating": 1500, "rating_color": "yellow", "tracks": ["dev"], "skills": ["Python", "AI"]}
+   {"handle": "your_handle", "rating": 1500, "rating_color": "yellow", "tracks": ["dev"], "skills": ["Python", "AI", "FastAPI"]}
    ```
 5. Click **"Execute"** — returns a `job_id` instantly
 6. Click **`GET /jobs/{job_id}`** → **"Try it out"**, enter the `job_id`, click **"Execute"**
-7. Poll until `"status": "succeeded"`, then use the `download_urls` in the response to download the rendered MP4
+7. Poll until `"status": "succeeded"`
+8. Click **`GET /outputs/{job_id}/{filename}`** → **"Try it out"**
+9. Enter the `job_id` and `profile_landscape.mp4` as the filename → **"Execute"** to download the rendered video
+
+The same works for `profile_vertical.mp4`, `captions.srt`, and `manifest.json`.
 
 ### Run the pre-built demo instead
 

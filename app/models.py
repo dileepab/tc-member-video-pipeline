@@ -87,7 +87,7 @@ class MemberMetadata:
 
 @dataclass(frozen=True)
 class RenderOptions:
-    aspect: RenderAspect = RenderAspect.LANDSCAPE
+    aspect: RenderAspect = RenderAspect.BOTH
     template: str = "topcoder-star"
     output_dir: Path = Path("outputs")
     work_dir: Path = Path("work")
@@ -107,7 +107,7 @@ class RenderOptions:
     @classmethod
     def from_dict(cls, payload: dict[str, Any] | None = None) -> "RenderOptions":
         payload = payload or {}
-        aspect = RenderAspect(payload.get("aspect", RenderAspect.LANDSCAPE))
+        aspect = RenderAspect(payload.get("aspect", RenderAspect.BOTH))
         music_path = payload.get("music_path")
         return cls(
             aspect=aspect,
