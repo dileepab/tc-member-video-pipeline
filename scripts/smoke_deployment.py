@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import time
 from pathlib import Path
 
 import httpx
@@ -54,6 +55,23 @@ def main() -> None:
     response.raise_for_status()
     payload = response.json()
     print(json.dumps(payload, indent=2))
+
+    if payload.get("status_url") and not payload.get("download_urls"):
+        status_url = str(payload["status_url"])
+        for _ in range(90):
+            status_response = httpx.get(base_url + status_url, timeout=30)
+            status_response.raise_for_status()
+            status_payload = status_response.json()
+            print(f"poll {status_url}: {status_payload.get('status')}")
+            if status_payload.get("status") == "succeeded":
+                payload = status_payload.get("result") or {}
+                print(json.dumps(payload, indent=2))
+                break
+            if status_payload.get("status") == "failed":
+                raise RuntimeError(json.dumps(status_payload, indent=2))
+            time.sleep(2)
+        else:
+            raise TimeoutError(f"render job did not finish: {status_url}")
 
     landscape_url = (
         payload.get("download_urls", {})

@@ -10,3 +10,4 @@ outputs/
 demo-output/work/
 
 .DS_Store
+.claude/worktrees/

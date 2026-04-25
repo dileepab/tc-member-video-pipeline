@@ -97,7 +97,7 @@ def choose_transcript_provider(model: str) -> TranscriptProvider:
 
 def _metadata_script(metadata: MemberMetadata) -> str:
     skills = ", ".join(metadata.top_skills[:4]) or "building great solutions"
-    tracks = " and ".join(track.value for track in metadata.tracks)
+    tracks = metadata.tracks[0].value
     return (
         f"Hi, I am {metadata.handle}, a Topcoder {tracks} member focused on {skills}. "
         "I love solving hard problems with the community."

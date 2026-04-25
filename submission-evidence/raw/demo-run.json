@@ -13,14 +13,14 @@
   "duration_seconds": 29.0,
   "estimated_cost_usd": 0.0017,
   "output_file_sizes_bytes": {
-    "landscape": 5153086,
-    "vertical": 6991316
+    "landscape": 5138504,
+    "vertical": 6972337
   },
   "timings": {
-    "probe_seconds": 0.066,
-    "audio_seconds": 3.534,
-    "caption_seconds": 0.002,
-    "render_seconds": 32.187
+    "probe_seconds": 0.065,
+    "audio_seconds": 3.513,
+    "caption_seconds": 0.003,
+    "render_seconds": 31.826
   },
   "adapters": {
     "transcription": "fallback-scripted",

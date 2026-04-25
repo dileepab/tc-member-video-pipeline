@@ -1,17 +1,19 @@
 Local deployment smoke test against Render-style PORT binding.
 
 Command:
-PORT=8013 sh -c '.venv/bin/uvicorn app.main:app --host 127.0.0.1 --port ${PORT:-8000}'
-.venv/bin/python scripts/smoke_deployment.py http://127.0.0.1:8013
+PORT=8014 sh -c '.venv/bin/uvicorn app.main:app --host 127.0.0.1 --port ${PORT:-8000}'
+.venv/bin/python scripts/smoke_deployment.py http://127.0.0.1:8014
 
 Result:
 - OK /: 200
 - OK /health: 200
 - OK /docs: 200
 - POST /render returned status 200
-- response included download_urls.outputs.landscape
+- response returned a job_id and status_url
+- polling GET /jobs/<job_id> reached status=succeeded
+- response included result.download_urls.outputs.landscape and result.download_urls.manifest
 - GET /outputs/<job_id>/profile_landscape.mp4 returned status 200
-- downloaded MP4 size: 4,379,005 bytes
+- downloaded MP4 size: 4,354,888 bytes
 
 Docker note:
 - Docker CLI is installed, but the local Docker daemon was not running in this environment:

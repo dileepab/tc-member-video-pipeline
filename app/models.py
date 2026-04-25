@@ -34,14 +34,25 @@ class MemberMetadata:
         if not handle:
             raise ValueError("member metadata requires a non-empty handle")
 
-        rating_color = str(payload.get("rating_color", "#EF3A3A")).strip()
+        rating_color = str(
+            payload.get("rating_color") or _rating_color_from_score(payload.get("rating")) or "#EF3A3A"
+        ).strip()
         if not _is_color(rating_color):
             raise ValueError("rating_color must be a CSS hex color or supported color name")
 
-        raw_tracks = payload.get("tracks") or payload.get("top_tracks") or ["Dev"]
+        raw_tracks = (
+            payload.get("tracks")
+            or payload.get("top_tracks")
+            or payload.get("top_track")
+            or payload.get("track")
+            or ["Dev"]
+        )
+        if isinstance(raw_tracks, str):
+            raw_tracks = [raw_tracks]
         tracks = [_parse_track(value) for value in raw_tracks]
 
-        top_skills = [str(skill).strip() for skill in payload.get("top_skills", [])]
+        raw_skills = payload.get("top_skills") or payload.get("skills") or []
+        top_skills = [str(skill).strip() for skill in raw_skills]
         top_skills = [skill for skill in top_skills if skill]
 
         return cls(
@@ -163,6 +174,24 @@ def _is_color(value: str) -> bool:
     if value.lower() in _COLOR_NAMES:
         return True
     return bool(re.fullmatch(r"#?[0-9a-fA-F]{6}", value))
+
+
+def _rating_color_from_score(value: Any) -> str | None:
+    if value is None:
+        return None
+    try:
+        rating = int(float(value))
+    except (TypeError, ValueError):
+        return None
+    if rating >= 2200:
+        return "red"
+    if rating >= 1500:
+        return "yellow"
+    if rating >= 1200:
+        return "blue"
+    if rating >= 900:
+        return "green"
+    return "gray"
 
 
 def _parse_track(value: Any) -> Track:

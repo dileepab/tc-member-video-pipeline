@@ -15,3 +15,6 @@
 | 2026-04-24 | Review will likely use 2-3 videos, one pipeline execution per video. | Free-plan/API feasibility can be estimated around low review volume rather than many repeated runs. | Applied |
 | 2026-04-24 | Deployment can be anywhere as long as it can be used for review. | Docker/local setup and any reachable hosting platform are acceptable review paths. | Applied |
 | 2026-04-25 | 720p is enough if quality is good, and cloud hosting cost is not required in the report. | Landscape render targets 1280x720, and the budget report excludes recurring hosting expenditure. | Applied |
+| 2026-04-25 | Top track is enough when a member has 2-3 tracks. | The renderer should accept multiple tracks but keep the visual treatment focused on the first/top track. | Applied |
+| 2026-04-25 | A common intro/outro/template is acceptable. | The solution can use the shared `topcoder-star` template with member-specific overlays instead of unique branding prep per video. | Applied |
+| 2026-04-25 | Reviewer raw input videos will be English only. | Docs and reviewer instructions should state that the pipeline assumes English source clips. | Applied |

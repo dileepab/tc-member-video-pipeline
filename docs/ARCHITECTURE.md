@@ -43,6 +43,9 @@ This aligns with the forum clarifications:
 - the likely operating scale is roughly `1k+`, so queue-backed workers are a good fit
 - the primary landscape output is 720p H.264/AAC MP4, with a separate vertical social export
 - the pipeline enforces the clarified 15-30 second input duration and 30 MB per-output file-size target
+- the reviewer input language is assumed to be English
+- the render uses a common reusable template and customizes it from member metadata
+- if multiple tracks are supplied, the first/top track is used for the lower-third icon and track label
 
 ## AI Boundary
 

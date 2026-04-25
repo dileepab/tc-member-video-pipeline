@@ -45,7 +45,7 @@ Recommended Render setup:
 3. Use `render.yaml` as-is.
 4. Add `OPENAI_API_KEY` only if you want live OpenAI captions; otherwise the deterministic caption fallback is expected.
 5. Open the deployed root URL and confirm it returns the API index.
-6. Open `/docs` and use `POST /render` with a 15-30 second MP4 and `samples/member_metadata.json`.
+6. Open `/docs` and use `POST /render` with a 15-30 second English MP4 and `samples/member_metadata.json`.
 
 After deployment, run:
 
@@ -60,7 +60,7 @@ For a full render smoke test, first ensure `demo-output/before_raw_intro.mp4` ex
 .venv/bin/python scripts/smoke_deployment.py https://YOUR-SERVICE.onrender.com
 ```
 
-The full smoke test uploads a sample clip to `POST /render`, checks the JSON response, and downloads the returned landscape MP4 from `/outputs/...`.
+The full smoke test uploads a sample clip to `POST /render`, polls `GET /jobs/{job_id}`, and downloads the returned landscape MP4 from `/outputs/...`.
 
 Free tiers may be too memory- or CPU-constrained for FFmpeg render jobs. If a hosted free-tier job times out, the same Docker image can still be reviewed locally with the commands above, which matches the forum clarification that deployment platform choice does not affect scoring as long as the reviewer can use the app.
 
@@ -95,21 +95,22 @@ The deployed app ships a full interactive API explorer at `/docs`. Reviewers can
 
 1. Open **`https://topcoder-profile-video-pipeline.onrender.com/docs`**
 2. Click **`POST /render`** → **"Try it out"**
-3. Under `file`, click **"Choose File"** and upload a 15–30 second MP4 clip (use `demo-output/before_raw_intro.mp4` from the repo if needed)
-4. Under `metadata`, paste:
+3. Under `video`, click **"Choose File"** and upload a 15-30 second English MP4 clip (use `demo-output/before_raw_intro.mp4` from the repo if needed)
+4. Under `metadata_json`, paste:
    ```json
    {
      "handle": "dileepa",
      "rating": 1500,
      "rating_color": "yellow",
-     "tracks": ["dev"],
+     "top_track": "dev",
      "skills": ["Python", "AI", "FastAPI"]
    }
    ```
-5. Click **"Execute"** — returns a `job_id` instantly
-6. Click **`GET /jobs/{job_id}`** → **"Try it out"**, enter the `job_id`, click **"Execute"**
-7. Poll until `"status": "succeeded"` — the response includes `download_urls`
-8. Open the output URL directly in your browser or download via curl:
+5. Leave `render_options_json` as `{}` for both landscape and vertical, or use `{"aspect":"landscape"}` for a faster single-output smoke test
+6. Click **"Execute"** — returns a `job_id` instantly
+7. Click **`GET /jobs/{job_id}`** → **"Try it out"**, enter the `job_id`, click **"Execute"**
+8. Poll until `"status": "succeeded"` — `result.download_urls` includes the downloadable MP4/caption paths
+9. Open the output URL directly in your browser or download via curl:
    ```
    http://127.0.0.1:8000/outputs/{job_id}/profile_landscape.mp4
    ```

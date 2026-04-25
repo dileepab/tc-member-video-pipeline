@@ -167,6 +167,9 @@ def _with_output_urls(result: dict[str, Any]) -> dict[str, Any]:
             caption_urls[key] = url
     if output_urls or caption_urls:
         result["download_urls"] = {"outputs": output_urls, "captions": caption_urls}
+        manifest_url = _local_output_url(str(result.get("manifest_path", "")))
+        if manifest_url:
+            result["download_urls"]["manifest"] = manifest_url
     return result
 
 

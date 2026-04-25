@@ -39,7 +39,7 @@ def build_brand_package(metadata: MemberMetadata, template: str = "topcoder-star
     skills = "  •  ".join(metadata.top_skills[:4]) if metadata.top_skills else "Topcoder Member"
 
     tracks_branding = []
-    for track in metadata.tracks:
+    for track in metadata.tracks[:1]:
         t_theme = theme.get("tracks", {}).get(track.value, {})
         tracks_branding.append(TrackBranding(
             name=track.value.upper(),

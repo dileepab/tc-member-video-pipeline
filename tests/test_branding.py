@@ -18,7 +18,7 @@ def test_brand_package_uses_track_icon_and_rating_color() -> None:
     assert brand.icon_text == "◈"
     assert brand.caption_font == "DejaVu Serif"
     assert brand.skills_label == "Figma  •  UX"
-    assert len(brand.tracks) > 0
+    assert len(brand.tracks) == 1
     assert brand.tracks[0].icon_path.name == "track-design.png"
     assert brand.tracks[0].name == "DESIGN"
     assert brand.logo_wordmark_path is not None
@@ -29,3 +29,18 @@ def test_brand_package_uses_track_icon_and_rating_color() -> None:
 
 def test_normalize_hex_preserves_hex_values() -> None:
     assert normalize_hex("29A7DF") == "#29A7DF"
+
+
+def test_brand_package_renders_only_top_track() -> None:
+    metadata = MemberMetadata.from_dict(
+        {
+            "handle": "coder",
+            "rating_color": "red",
+            "tracks": ["Dev", "Data Science"],
+            "top_skills": ["Python"],
+        }
+    )
+
+    brand = build_brand_package(metadata)
+
+    assert [track.name for track in brand.tracks] == ["DEV"]

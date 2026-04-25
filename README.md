@@ -10,6 +10,7 @@ The PoC is designed to be reviewer-friendly:
 - It renders H.264/AAC MP4 desktop (`1280x720`) and mobile/social (`1080x1920`) outputs from the same branding template.
 - It enforces the clarified 15-30 second input window and checks each rendered MP4 stays below 30 MB.
 - It includes Docker and Render blueprint deployment paths for API-only review.
+- It assumes English source clips, uses a common Topcoder Star template, and renders the member's first/top track.
 - The default brand theme now uses public Topcoder logo/icon assets plus colors observed on `https://www.topcoder.com/` on April 24, 2026.
 
 ## Stack
@@ -65,15 +66,16 @@ uvicorn app.main:app --reload
 
 1. Open **`http://127.0.0.1:8000/docs`** in your browser
 2. Click **`POST /render`** → **"Try it out"**
-3. Under `file`, click **"Choose File"** and upload a 15–30 second MP4 clip
+3. Under `video`, click **"Choose File"** and upload a 15-30 second English MP4 clip
 4. Under `metadata_json`, paste:
    ```json
-   {"handle": "your_handle", "rating": 1500, "rating_color": "yellow", "tracks": ["dev"], "skills": ["Python", "AI", "FastAPI"]}
+   {"handle": "your_handle", "rating": 1500, "rating_color": "yellow", "top_track": "dev", "skills": ["Python", "AI", "FastAPI"]}
    ```
-5. Click **"Execute"** — returns a `job_id` instantly
-6. Click **`GET /jobs/{job_id}`** → **"Try it out"**, enter the `job_id`, click **"Execute"**
-7. Poll until `"status": "succeeded"` — the response includes `download_urls`
-8. Copy the path from `download_urls.outputs.landscape` and open it directly in your browser:
+5. Leave `render_options_json` as `{}` unless you only want one aspect, for example `{"aspect":"landscape"}`
+6. Click **"Execute"** — returns a `job_id` instantly
+7. Click **`GET /jobs/{job_id}`** → **"Try it out"**, enter the `job_id`, click **"Execute"**
+8. Poll until `"status": "succeeded"` — `result.download_urls` includes the downloadable MP4/caption paths
+9. Copy the path from `result.download_urls.outputs.landscape` and open it directly in your browser:
    ```
    http://127.0.0.1:8000/outputs/{job_id}/profile_landscape.mp4
    ```
@@ -118,6 +120,8 @@ Run the end-to-end demo:
 
 That default command uses the bundled 29-second sample clip `demo-output/Profile_Intro_Video_Generated.mp4` when it is present and falls back to a reproducible 18-second generated clip otherwise. Any custom input must be 15-30 seconds long.
 
+Forum note: reviewer-provided inputs are expected to be English only. The render uses a common Topcoder Star template, with member metadata customizing the handle, rating color, skills, and first/top track.
+
 To test with a real sample clip instead:
 
 ```bash
@@ -159,7 +163,7 @@ curl -X POST http://127.0.0.1:8000/jobs \
   -d @samples/job_local.json
 ```
 
-For deployed review, `POST /render` returns `download_urls` for rendered files under `/outputs/...`.
+For deployed review, `POST /render` returns a `job_id`; poll `GET /jobs/{job_id}` until `status` is `succeeded`, then use `result.download_urls` for rendered files under `/outputs/...`.
 
 ## Environment
 
