@@ -29,10 +29,12 @@ def render_profile_video(
         duration_seconds=duration_seconds,
         vertical=aspect == RenderAspect.VERTICAL,
     )
-    maxrate = "6M"
-    bufsize = "12M"
+    maxrate = "3M"
+    bufsize = "4M"
     run_ffmpeg(
         [
+            "-threads",
+            "1",
             "-i",
             str(input_video),
             "-i",
@@ -48,9 +50,9 @@ def render_profile_video(
             "-pix_fmt",
             "yuv420p",
             "-preset",
-            "veryfast",
+            "ultrafast",
             "-crf",
-            "20",
+            "22",
             "-maxrate",
             maxrate,
             "-bufsize",
@@ -58,7 +60,7 @@ def render_profile_video(
             "-c:a",
             "aac",
             "-b:a",
-            "192k",
+            "128k",
             "-movflags",
             "+faststart",
             "-shortest",
