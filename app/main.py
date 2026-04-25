@@ -107,6 +107,7 @@ def get_job(job_id: str) -> dict[str, Any]:
 
 @app.post("/render")
 async def render_upload(
+    background_tasks: BackgroundTasks,
     video: UploadFile = File(...),
     metadata_json: str = Form(...),
     render_options_json: str = Form("{}"),
@@ -125,25 +126,23 @@ async def render_upload(
     with input_path.open("wb") as output_file:
         shutil.copyfileobj(video.file, output_file)
 
-    result = _pipeline().process_file(
-        input_video=input_path,
-        metadata=metadata,
-        options=RenderOptions(
-            aspect=options.aspect,
-            template=options.template,
-            output_dir=output_dir,
-            work_dir=work_dir,
-            music_path=options.music_path,
-            keep_intermediates=options.keep_intermediates,
-            music_volume=options.music_volume,
-            music_lead_volume=options.music_lead_volume,
-            music_intro_seconds=options.music_intro_seconds,
-            music_outro_seconds=options.music_outro_seconds,
-        ),
-        job_id=job_id,
-        input_uri=f"upload://{video.filename}",
+    _get_jobs().create(job_id)
+    background_tasks.add_task(
+        _run_upload_job,
+        job_id,
+        input_path,
+        video.filename or "upload.mp4",
+        metadata,
+        options,
+        output_dir,
+        work_dir,
     )
-    return _with_output_urls(_result_to_dict(result))
+    return {
+        "job_id": job_id,
+        "status": "queued",
+        "status_url": f"/jobs/{job_id}",
+        "poll_hint": "GET /jobs/{job_id} until status=succeeded, then download from download_urls",
+    }
 
 
 def _render_options_from_payload(payload: dict[str, Any], settings: Settings | None = None) -> RenderOptions:
@@ -197,6 +196,40 @@ def _run_job(
             options=options,
             output_uri=output_uri,
             job_id=job_id,
+        )
+        _get_jobs().set_succeeded(job_id, _with_output_urls(_result_to_dict(result)))
+    except Exception as exc:
+        _get_jobs().set_failed(job_id, exc)
+
+
+def _run_upload_job(
+    job_id: str,
+    input_path: Path,
+    filename: str,
+    metadata: MemberMetadata,
+    options: RenderOptions,
+    output_dir: Path,
+    work_dir: Path,
+) -> None:
+    _get_jobs().set_running(job_id)
+    try:
+        result = _pipeline().process_file(
+            input_video=input_path,
+            metadata=metadata,
+            options=RenderOptions(
+                aspect=options.aspect,
+                template=options.template,
+                output_dir=output_dir,
+                work_dir=work_dir,
+                music_path=options.music_path,
+                keep_intermediates=options.keep_intermediates,
+                music_volume=options.music_volume,
+                music_lead_volume=options.music_lead_volume,
+                music_intro_seconds=options.music_intro_seconds,
+                music_outro_seconds=options.music_outro_seconds,
+            ),
+            job_id=job_id,
+            input_uri=f"upload://{filename}",
         )
         _get_jobs().set_succeeded(job_id, _with_output_urls(_result_to_dict(result)))
     except Exception as exc:
