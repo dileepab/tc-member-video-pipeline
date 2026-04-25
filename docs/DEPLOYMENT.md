@@ -89,6 +89,35 @@ TOPCODER_OUTPUT_DIR=/tmp/outputs
 
 For production, prefer IAM task roles over static AWS keys.
 
+## Manual Testing via Swagger UI
+
+The deployed app ships a full interactive API explorer at `/docs`. Reviewers can test the pipeline end-to-end without any CLI tools:
+
+1. Open **`https://topcoder-profile-video-pipeline.onrender.com/docs`**
+2. Click **`POST /render`** → **"Try it out"**
+3. Under `file`, click **"Choose File"** and upload a 15–30 second MP4 clip (use `demo-output/before_raw_intro.mp4` from the repo if needed)
+4. Under `metadata`, paste:
+   ```json
+   {
+     "handle": "dileepa",
+     "rating": 1500,
+     "rating_color": "yellow",
+     "tracks": ["dev"],
+     "skills": ["Python", "AI", "FastAPI"]
+   }
+   ```
+5. Click **"Execute"** — the response includes a `job_id` and `download_urls`
+6. To download the rendered landscape video, click **`GET /outputs/{job_id}/{filename}`** → **"Try it out"**
+7. Enter the `job_id` from step 5 and `profile_landscape.mp4` as the filename → **"Execute"**
+
+The same flow works for `profile_vertical.mp4`, `captions.srt`, and `manifest.json`.
+
+> **Note:** Free-tier Render instances have 512 MB RAM. If the render job returns a 502, run the same test locally using the Docker container or `uvicorn` as described above — the forum confirmed deployment platform does not affect scoring.
+
 ## Review Note
 
-This repo includes a containerized deployment path and local verification flow, but it does not include a public deployed URL because that final step requires external cloud credentials and DNS/runtime ownership outside this workspace. The same Docker image and local setup guide can be used for reviewer verification if a free-tier hosted instance cannot reliably finish FFmpeg jobs.
+The deployed URL is **`https://topcoder-profile-video-pipeline.onrender.com`**.
+
+- `GET /health` → `{"status":"ok"}` confirms the service is running
+- `GET /docs` → interactive Swagger UI for manual testing
+- Full video rendering may exceed free-tier memory limits; use the local Docker path for full pipeline verification if needed
