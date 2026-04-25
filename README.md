@@ -72,9 +72,15 @@ uvicorn app.main:app --reload
    ```
 5. Click **"Execute"** — returns a `job_id` instantly
 6. Click **`GET /jobs/{job_id}`** → **"Try it out"**, enter the `job_id`, click **"Execute"**
-7. Poll until `"status": "succeeded"`
-8. Click **`GET /outputs/{job_id}/{filename}`** → **"Try it out"**
-9. Enter the `job_id` and `profile_landscape.mp4` as the filename → **"Execute"** to download the rendered video
+7. Poll until `"status": "succeeded"` — the response includes `download_urls`
+8. Copy the path from `download_urls.outputs.landscape` and open it directly in your browser:
+   ```
+   http://127.0.0.1:8000/outputs/{job_id}/profile_landscape.mp4
+   ```
+   Or download via curl:
+   ```bash
+   curl http://127.0.0.1:8000/outputs/{job_id}/profile_landscape.mp4 -o output.mp4
+   ```
 
 The same works for `profile_vertical.mp4`, `captions.srt`, and `manifest.json`.
 

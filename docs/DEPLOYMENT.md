@@ -106,11 +106,18 @@ The deployed app ships a full interactive API explorer at `/docs`. Reviewers can
      "skills": ["Python", "AI", "FastAPI"]
    }
    ```
-5. Click **"Execute"** — the response includes a `job_id` and `download_urls`
-6. To download the rendered landscape video, click **`GET /outputs/{job_id}/{filename}`** → **"Try it out"**
-7. Enter the `job_id` from step 5 and `profile_landscape.mp4` as the filename → **"Execute"**
+5. Click **"Execute"** — returns a `job_id` instantly
+6. Click **`GET /jobs/{job_id}`** → **"Try it out"**, enter the `job_id`, click **"Execute"**
+7. Poll until `"status": "succeeded"` — the response includes `download_urls`
+8. Open the output URL directly in your browser or download via curl:
+   ```
+   http://127.0.0.1:8000/outputs/{job_id}/profile_landscape.mp4
+   ```
+   ```bash
+   curl http://127.0.0.1:8000/outputs/{job_id}/profile_landscape.mp4 -o output.mp4
+   ```
 
-The same flow works for `profile_vertical.mp4`, `captions.srt`, and `manifest.json`.
+The same works for `profile_vertical.mp4`, `captions.srt`, and `manifest.json`.
 
 > **Note:** Free-tier Render instances have 512 MB RAM. If the render job returns a 502, run the same test locally using the Docker container or `uvicorn` as described above — the forum confirmed deployment platform does not affect scoring.
 
