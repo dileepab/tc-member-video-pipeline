@@ -40,6 +40,35 @@ If no API key is configured, the app still runs end to end by falling back to me
 
 If an OpenAI key is configured but the account has no available quota or billing, the pipeline now falls back to scripted captions and records a warning in `manifest.json` instead of crashing.
 
+## Reviewer Setup
+
+> The deployed URL at `https://topcoder-profile-video-pipeline.onrender.com` may be slow or unavailable on the free tier. Local setup is fully supported per forum confirmation — please use the steps below.
+
+**Prerequisites:** Python 3.11+, FFmpeg
+
+```bash
+# 1. Clone and install
+git clone https://github.com/dileepab/tc-member-video-pipeline.git
+cd tc-member-video-pipeline
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -e ".[dev]"
+
+# 2. Add the OpenAI API key (provided separately in the submission notes)
+export OPENAI_API_KEY=sk-...
+
+# 3. Run the full pipeline demo
+.venv/bin/python scripts/run_demo.py
+
+# 4. Start the API server
+uvicorn app.main:app --reload
+# Open http://127.0.0.1:8000/docs to test via Swagger UI
+```
+
+Output videos will be written to `demo-output/after/`. See `demo-output/topcoder_star_before_after.mp4` for the before/after showcase and `demo-output/run_app_demo.mp4` for a walkthrough.
+
+---
+
 ## Quick Start
 
 Install dependencies:
